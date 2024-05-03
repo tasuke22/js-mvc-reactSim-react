@@ -1,12 +1,8 @@
 console.log("hello world!")
 
-/**
- * formの送信時に実行する関数。
- * input form の入力内容を取得してそれをTODOリストに加える
- */
 function handleFormSubmit() {
     const input = document.getElementById("task-input");
-    const inputValue = input.value; // 厳密には instanceof で input要素であるかのチェックを入れるべき
+    const inputValue = input.value;
     if (!inputValue.length > 0) {
         alert("テキストを入力してください。");
         return;
@@ -14,14 +10,9 @@ function handleFormSubmit() {
     const todosEl = document.getElementById("todos");
     const todoEl = createTodoElement(inputValue);
     todosEl.appendChild(todoEl);
-    input.value = ""; // input のリセット
+    input.value = "";
 }
 
-/**
- * TODO要素を作る関数
- * @param {*} inputValue TODO文字列
- * @returns TODO要素
- */
 function createTodoElement(inputValue) {
     const todoEl = document.createElement("li");
     const checkBoxEl = document.createElement("input");
