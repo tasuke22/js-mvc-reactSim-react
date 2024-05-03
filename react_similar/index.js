@@ -83,9 +83,9 @@ class Controller {
         this.handleSubmitForm();
     }
 
-    flash() {
+    flash() { // ③flashを使うことでイベントハンドラの登録は楽になったが、ユーザーがいちいち呼ぶ必要あるので、イベントハンドラの登録漏れが発生しうる
         const todos = todoList.getTodos();
-        view.render(todos);
+        view.render(todos); // ①全更新しているのでパフォーマンスはよくない
 
         // イベントハンドラの付け直し
         todos.forEach((todo) => {
@@ -107,7 +107,7 @@ class Controller {
                 return;
             }
             const addedId = todoList.addTodo(task);
-            this.flash();
+            this.flash(); // ②データを変えるたびにUI更新する関数を呼んでいる
         });
     }
 
@@ -116,7 +116,7 @@ class Controller {
         checkBoxEl.addEventListener("change", (e) => {
             const checked = e.target.checked;
             todoList.checkTodo(id, checked);
-            this.flash();
+            this.flash(); // ②データを変えるたびにUI更新する関数を呼んでいる
         });
     }
 
@@ -124,10 +124,17 @@ class Controller {
         const buttonEl = document.getElementById(`button-${id}`);
         buttonEl.addEventListener("click", () => {
             todoList.removeTodo(id);
-            this.flash();
+            this.flash(); // ②データを変えるたびにUI更新する関数を呼んでいる
         });
     }
 }
 
 const formController = new Controller();
 formController.setup();
+
+// ①全更新している(この形式だと 1 つの Todo を更新しただけのときも要素を全更新しており、パフォーマンスはよくない)
+// ②データを変えるたびに UI を更新する関数を呼ぶ必要がある(ユーザーは flush を呼ぶ必要があるので根本的な問題は解決していません)
+// ③イベントハンドラを付け直す必要がある(flush を使うことでイベントハンドラの登録は楽になったが、ユーザーは flush を呼ぶ必要があるので根本的な問題は解決していません)
+
+
+// Model のデータを元に UI を作る点は React の思想に近い。
