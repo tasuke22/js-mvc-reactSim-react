@@ -99,14 +99,14 @@ class Controller {
             }
             const addedTodoId = todoList.addTodo(task);
             const todo = todoList.getTodo(addedTodoId);
-            view.addTodo(todo);
-            this.handleCheckTask(todo.id);
-            this.handleClickDeleteTask(todo.id);
+            view.addTodo(todo); // ①View と Model の同期は手動
+            this.handleCheckTask(todo.id); // ②イベントハンドラの登録が手動
+            this.handleClickDeleteTask(todo.id); // ②イベントハンドラの登録が手動
             view.resetTodo();
         });
     }
 
-    handleCheckTask(id) {
+    handleCheckTask(id) { // ③Controller は View の詳細を知る必要がある
         const checkBoxEl = document.getElementById(`checkbox-${id}`);
         checkBoxEl.onchange = function (e) {
             const checked = e.target.checked;
@@ -130,3 +130,7 @@ class Controller {
 
 const formController = new Controller();
 formController.setup();
+
+// ①View と Model の同期は手動(Model の更新、もしくは View の更新を忘れると M と V が乖離)
+// ②イベントハンドラの登録が手動(登録する関数を呼び忘れると機能不備)
+// ③Controller は View の詳細を知る必要がある(Controller は UI にある HTML 要素やクラス名の詳細を知る必要がある 依存)
