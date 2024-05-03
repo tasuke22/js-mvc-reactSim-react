@@ -4,11 +4,6 @@ class TodoListModel {
         this.todos = new Map();
     }
 
-    /**
-     * task を todo として todoList に追加する.
-     * @param {string} task
-     * @returns 追加された todo の id
-     */
     addTodo(task) {
         this.idCounter += 1;
         this.todos.set(this.idCounter, {
@@ -19,20 +14,10 @@ class TodoListModel {
         return this.idCounter;
     }
 
-    /**
-     * 指定idのTODOを削除
-     * @param {number} id TODOのid
-     */
     removeTodo(id) {
         this.todos.delete(id);
     }
 
-    /**
-     * TODOの完了状態を変更する
-     * @param {number} id TODOのid
-     * @param {boolean} isCheck 次のcheck状態
-     * @returns 更新済みTODO
-     */
     checkTodo(id, isCheck) {
         const todo = this.todos.get(id);
         const stateChangedTodo = { ...todo, checked: isCheck };
@@ -40,19 +25,10 @@ class TodoListModel {
         return this.getTodo(id);
     }
 
-    /**
-     * 指定したidのTODOを取得
-     * @param {number} id TODOのid
-     * @returns TODO
-     */
     getTodo(id) {
         return this.todos.get(id);
     }
 
-    /**
-     * todosを全件取得
-     * @returns TODOs
-     */
     getTodos() {
         return Array.from(this.todos.values());
     }
@@ -61,10 +37,6 @@ class TodoListModel {
 const todoList = new TodoListModel();
 
 class View {
-    /**
-     * TODOの配列からUIを生成する関数
-     * @param {Todo[]} todos
-     */
     render(todos) {
         const todosEl = document.getElementById("todos");
         todosEl.innerHTML = "";
@@ -76,11 +48,6 @@ class View {
         todosEl.appendChild(fragment);
     }
 
-    /**
-     * TODO要素を作る
-     * @param {id: number, task: string} todo
-     * @returns todoのHTML要素
-     */
     _createTodoElement(todo) {
         const { id, task, checked } = todo;
         const todoEl = document.createElement("li");
@@ -128,9 +95,6 @@ class Controller {
         });
     }
 
-    /**
-     * タスク送信時にTODO追加とUI反映をする
-     */
     handleSubmitForm() {
         const formEl = document.getElementById("task-send-form");
         formEl.addEventListener("submit", (ev) => {
@@ -147,10 +111,6 @@ class Controller {
         });
     }
 
-    /**
-     * 指定したcheckboxの状態変化に応じてTODO更新とUI反映をする
-     * @param {number} id TODOのid
-     */
     handleCheckTask(id) {
         const checkBoxEl = document.getElementById(`checkbox-${id}`);
         checkBoxEl.addEventListener("change", (e) => {
@@ -160,10 +120,6 @@ class Controller {
         });
     }
 
-    /**
-     * 指定したTODO削除とUI反映をする
-     * @param {*} id TODOのid
-     */
     handleClickDeleteTask(id) {
         const buttonEl = document.getElementById(`button-${id}`);
         buttonEl.addEventListener("click", () => {
